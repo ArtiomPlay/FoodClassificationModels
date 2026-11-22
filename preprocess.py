@@ -4,23 +4,15 @@ from pathlib import Path
 def preprocess_image(image, output_size=(20, 20)):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    blurred = cv2.GaussianBlur(gray, (3, 3), 0)
-
-    threshold_value, binary = cv2.threshold(
-        blurred,
-        0, 255,
-        cv2.THRESH_BINARY + cv2.THRESH_OTSU
-    )
-
     resized = cv2.resize(
-        binary,
+        gray,
         output_size,
         interpolation=cv2.INTER_NEAREST
     )
 
-    return gray, blurred, binary, resized
+    return gray, resized
 
-def process_dataset(input_directory, output_directory):
+def process_dataset(input_directory, output_directory, size):
     input_directory = Path(input_directory)
     output_directory = Path(output_directory)
 
@@ -39,7 +31,7 @@ def process_dataset(input_directory, output_directory):
             print(f"Could not read: {file_path}")
             continue
 
-        gray, blurred, binary, resized = preprocess_image(image)
+        gray, resized = preprocess_image(image, (size, size))
 
         relative_path = file_path.relative_to(input_directory)
 
@@ -54,5 +46,11 @@ def process_dataset(input_directory, output_directory):
     print(f"Processed {processed_count} images into {output_directory}")
 
 if __name__ == "__main__":
-    process_dataset("Data/Train", "Processed/Train")
-    process_dataset("Data/Test", "Processed/Test")
+    process_dataset("Data/Train", "Processed/Size20/Train", 20)
+    process_dataset("Data/Train", "Processed/Size30/Train", 30)
+    process_dataset("Data/Train", "Processed/Size40/Train", 40)
+    process_dataset("Data/Train", "Processed/Size50/Train", 50)
+    process_dataset("Data/Test", "Processed/Size20/Test", 20)
+    process_dataset("Data/Test", "Processed/Size30/Test", 30)
+    process_dataset("Data/Test", "Processed/Size40/Test", 40)
+    process_dataset("Data/Test", "Processed/Size50/Test", 50)

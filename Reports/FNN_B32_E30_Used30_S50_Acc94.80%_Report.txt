@@ -1,0 +1,10 @@
+              precision    recall  f1-score   support
+
+      Banana       1.00      1.00      1.00       479
+ Bell Pepper       1.00      0.84      0.91       839
+      Orange       1.00      1.00      1.00       628
+  Strawberry       0.84      1.00      0.91       725
+
+    accuracy                           0.95      2671
+   macro avg       0.96      0.96      0.96      2671
+weighted avg       0.96      0.95      0.95      2671
